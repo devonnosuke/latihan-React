@@ -1,22 +1,47 @@
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function CekUsia(props) {
-  return 2022 - props.tahun;
-}
+class Timer extends Component {
 
-function Sapa(props) {
-  return <h1>Hallo {props.nama} - usia saya <CekUsia tahun={props.tahunLahir} /> </h1>;
-}
+  constructor(props){
+    super(props)
+    this.state = {
+      time: props.start
+    }
+  }
 
+  // lifecycle
+  componentDidMount(){
+    this.addInterval = setInterval(() => this.increase(), 1000); 
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.addInterval)
+  }
+
+
+  increase() {
+    // update state time setiap detik
+    this.setState( (state, props) => ({
+          time: parseInt(state.time) +1
+    }));
+  }
+
+  render(){
+    return (
+      <div>{this.state.time}</div>
+    )
+  }
+}
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Sapa nama='Devon' tahunLahir='2000' />
-        <Sapa nama='Aulia' tahunLahir='2005' />
+        <Timer start='0' />
+        <Timer start='5' />
       </header>
     </div>
   );
