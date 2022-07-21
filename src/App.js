@@ -1,51 +1,39 @@
 import React, {Component} from 'react';
-import List from './List';
 
 class App extends Component {
   
   constructor(props) {
-    super(props);
-    
+    super(props)
     this.state = {
-      catatan: '',
-      daftarCatatan: [],
+      items: [],
+      isLoading: true
     }
-  
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.setState({
-      catatan       : '',
-      daftarCatatan : [...this.state.daftarCatatan, this.state.catatan]
-    });
-  }
-  
-  handleChange = (event) => {
-    this.setState({
-      catatan: event.target.value
-    })
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then(response => response.json())
+    .then(data => this.setState({ items:data, isLoading: false }))
   }
 
-  kosongkanCatatan = () => {
-    this.setState({
-      daftarCatatan : []
-    })
-  } 
+  render(){
+    const items = this.state.items
 
-  render() {
-    return (
-      // membuat form add
+    if (this.state.isLoading) {
+      return <h1>Sedang Memuat...</h1>;
+    }
+
+    return(
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input value={this.state.catatan} onChange={this.handleChange} />
-          <button>Tambah Catatan</button>
-        </form>
-          <button onClick={this.kosongkanCatatan}>Kosongkan Catatan</button>
-          <List daftarCatatan={this.state.daftarCatatan} />
+        <ul>
+          { items.map( 
+            (item, index) => 
+            <li key={index}> {item.company.catchPhrase} </li> 
+          )}
+        </ul>
       </div>
-    );
-  };
+    )
+  }
 }
 
 export default App;
