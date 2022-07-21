@@ -1,57 +1,51 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import List from './List';
 
-// function Clicker() {
-//   function handleClick(e) {
-//     alert('berhasil klik');
-//     e.preventDefault();
-//   }
-
-//   return (
-//     <a href="#" onClick={handleClick}>Klik</a>
-//   )
-// }
-
-class Toggle extends Component {
+class App extends Component {
   
   constructor(props) {
-    super(props)
-    this.state = 
-    {
-      toggleStatus : true
+    super(props);
+    
+    this.state = {
+      catatan: '',
+      daftarCatatan: [],
     }
-
-    this.handleClick = this.handleClick.bind(this);
+  
   }
 
-  handleClick(){
-    this.setState(state=>({
-      toggleStatus: !state.toggleStatus
-    }))
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.setState({
+      catatan       : '',
+      daftarCatatan : [...this.state.daftarCatatan, this.state.catatan]
+    });
+  }
+  
+  handleChange = (event) => {
+    this.setState({
+      catatan: event.target.value
+    })
   }
 
-  render(){
-    return(
-      <button onClick={this.handleClick}>
-        {this.state.toggleStatus ? 'ON':'OFF'}
-      </button>
-    )
-  }
-}
+  kosongkanCatatan = () => {
+    this.setState({
+      daftarCatatan : []
+    })
+  } 
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Toggle />
-        <Toggle />
-        <Toggle />
-        <Toggle />
-      </header>
-    </div>
-  );
+  render() {
+    return (
+      // membuat form add
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input value={this.state.catatan} onChange={this.handleChange} />
+          <button>Tambah Catatan</button>
+        </form>
+          <button onClick={this.kosongkanCatatan}>Kosongkan Catatan</button>
+          <List daftarCatatan={this.state.daftarCatatan} />
+      </div>
+    );
+  };
 }
 
 export default App;
