@@ -2,35 +2,40 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-class Timer extends Component {
+// function Clicker() {
+//   function handleClick(e) {
+//     alert('berhasil klik');
+//     e.preventDefault();
+//   }
 
-  constructor(props){
+//   return (
+//     <a href="#" onClick={handleClick}>Klik</a>
+//   )
+// }
+
+class Toggle extends Component {
+  
+  constructor(props) {
     super(props)
-    this.state = {
-      time: props.start
+    this.state = 
+    {
+      toggleStatus : true
     }
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  // lifecycle
-  componentDidMount(){
-    this.addInterval = setInterval(() => this.increase(), 1000); 
-  }
-
-  componentWillUnmount(){
-    clearInterval(this.addInterval)
-  }
-
-
-  increase() {
-    // update state time setiap detik
-    this.setState( (state, props) => ({
-          time: parseInt(state.time) +1
-    }));
+  handleClick(){
+    this.setState(state=>({
+      toggleStatus: !state.toggleStatus
+    }))
   }
 
   render(){
-    return (
-      <div>{this.state.time}</div>
+    return(
+      <button onClick={this.handleClick}>
+        {this.state.toggleStatus ? 'ON':'OFF'}
+      </button>
     )
   }
 }
@@ -40,8 +45,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Timer start='0' />
-        <Timer start='5' />
+        <Toggle />
+        <Toggle />
+        <Toggle />
+        <Toggle />
       </header>
     </div>
   );
